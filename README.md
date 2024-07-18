@@ -30,3 +30,18 @@ Save as TXT File: The list of tuples is then saved as a text file (e.g., "prepar
 5. Data Import into SQL (Separate Process):
 
 This ReadMe focuses on data preparation and export.
+
+#Q1  = How to run the code in jupyter notebook?
+
+
+Open Jupyter Notebook: Launch Jupyter Notebook and create a new Python 3 notebook.
+
+Import Libraries: In the first code cell, type import pandas as pd to import Pandas.
+
+Set File Path: In the second cell, specify the path to your CSV file (e.g., data_file = 'path/to/your/data.csv').
+
+Read and Clean Data: In the next cell, use df = pd.read_csv(data_file) to read the CSV. Add code cells for cleaning steps (dropping columns, handling missing values, etc.) using Pandas methods.
+
+Export Data: In a separate cell, write code to convert the DataFrame to a tuple list and save it as a text file (e.g., df.to_tuples(out=open('prepared_data.txt', 'w'))).
+
+Run Cells: Press Shift + Enter to execute each code cell sequentially. Your data will be cleaned and exported to a text file ready for SQL import.
