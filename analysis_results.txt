@@ -1,0 +1,100 @@
+a. What is the average loan amount for borrowers who are more than 5 days past due?
+
+This query calculates the average loan amount for borrowers whose DaysLeftToPayCurrentEMI is more than 5, indicating they are more than 5 days past due.
+
+SELECT AVG(LoanAmount) AS AverageLoanAmount
+FROM borrowers
+WHERE DaysLeftToPayCurrentEMI > 5;
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+b. Who are the top 10 borrowers with the highest outstanding balance?
+
+SELECT 
+  Name, 
+  SUM(Loan Amount - (EMI * (Loan Term - Days Left to Pay Current EMI) / Loan Term)) AS Outstanding Balance
+FROM borrowers
+GROUP BY Name
+ORDER BY Outstanding Balance DESC
+LIMIT 10;
+
+This SQL query calculates the outstanding balance for each borrower in the borrowers table and retrieves the top 10 borrowers with the highest outstanding balance. Here's a breakdown of the query:
+
+1. Selecting Columns:
+
+Name: Selects the name of the borrower from the borrowers table.
+2. Calculating Outstanding Balance:
+
+SUM(Loan Amount - (EMI * (Loan Term - Days Left to Pay Current EMI) / Loan Term)): This part calculates the outstanding balance for each borrower.
+Loan Amount: Represents the initial amount borrowed by the borrower.
+EMI: Represents the Equated Monthly Installment (fixed amount paid per month).
+Loan Term: Represents the total duration of the loan in months (e.g., 12 for a year).
+Days Left to Pay Current EMI: Represents the remaining days to pay the current EMI installment.
+Explanation of the calculation:
+
+The expression subtracts the estimated total amount paid from the Loan Amount to get the outstanding balance.
+The estimated total amount paid is calculated by multiplying the EMI by a fraction:
+The numerator (Loan Term - Days Left to Pay Current EMI) represents the estimated number of EMIs already paid. It subtracts the remaining days from the total loan term to get the estimated number of payments made.
+The denominator (Loan Term) represents the total number of EMIs to be paid throughout the loan term.
+Dividing by the Loan Term normalizes the calculation for different loan durations.
+3. Grouping and Ordering:
+
+GROUP BY Name: Groups the results by borrower name, allowing us to calculate the outstanding balance for each individual.
+ORDER BY Outstanding Balance DESC: Orders the results by the calculated Outstanding Balance in descending order (highest outstanding balance first).
+4. Limiting Results:
+
+LIMIT 10: Limits the retrieved results to the top 10 borrowers with the highest outstanding balance.
+
+Assumptions:
+
+I assumed the Days Left to Pay Current EMI reflects the remaining days within the current EMI cycle, not the total remaining loan duration.
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+c  List of all borrowers with good repayment history
+
+SELECT *
+FROM borrowers
+WHERE DelayedPayment = No;
+
+Assumption - I assumed that Good repayment history = No delayed payments
+SELECT *: This clause specifies that all columns should be selected from the borrowers table. Instead of listing each column explicitly (Name, DateOfBirth, Gender, ...), * is used as a shorthand to select all columns.
+
+FROM borrowers: Specifies the table from which data is being queried, in this case, it's the borrowers table.
+
+WHERE DelayedPayment = No: This is the conditional clause that filters the rows. It specifies that only rows where the value of the DelayedPayment column is exactly No should be included in the result set.
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+d  Brief analysis wrt loan type
+
+I. Count: The total number of loans issued for each type.
+SELECT LoanType, COUNT(*) AS TotalLoans
+FROM borrowers
+GROUP BY LoanType;
+
+
+II. Average Loan Amount: The average amount borrowed for each loan type.
+SELECT LoanType, AVG(LoanAmount) AS AverageLoanAmount
+FROM borrowers
+GROUP BY LoanType;
+
+
+III. Total Loan Amount: The sum of all loan amounts for each type.
+SELECT LoanType, SUM(LoanAmount) AS TotalLoanAmount
+FROM borrowers
+GROUP BY LoanType;
